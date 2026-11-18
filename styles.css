@@ -53,26 +53,16 @@ a:focus-visible {
 .wordmark {
   display: inline-flex;
   align-items: center;
-  gap: 11px;
   color: var(--ink);
-  font-size: 14px;
-  line-height: 1.15;
   text-decoration: none;
 }
 
-.wordmark strong {
-  font-size: 16px;
-}
-
-.wordmark-mark {
-  display: grid;
-  width: 38px;
-  height: 38px;
-  place-items: center;
-  border: 1px solid var(--ink);
-  border-radius: 50%;
-  color: var(--purple);
-  font-size: 22px;
+.wordmark-logo {
+  display: block;
+  width: auto;
+  height: 145px;
+  max-width: 260px;
+  object-fit: contain;
 }
 
 .site-nav {
@@ -426,15 +416,12 @@ p {
   font-weight: 700;
   letter-spacing: 0.12em;
 }
-
-.detail-icon {
-  position: absolute;
-  top: 20px;
-  right: 26px;
-  color: var(--purple);
-  font-size: 28px;
+.detail-icon-2 {
+  display: block;
+  fill: var(--purple);
+  width: 100px;
+  height: 100px;
 }
-
 .detail-label {
   margin: 36px 0 10px;
   color: var(--muted);
@@ -576,7 +563,7 @@ p {
 .form-note,
 .form-status {
   margin: 0;
-  color: var(--muted);
+  color: var(--paper-light);
   font-size: 12px;
   line-height: 1.6;
 }
@@ -802,6 +789,11 @@ p {
   .site-header {
     width: calc(100% - 40px);
     height: 78px;
+  }
+
+  .wordmark-logo {
+    height: 54px;
+    max-width: 190px;
   }
 
   .site-nav {
