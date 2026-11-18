@@ -47,7 +47,6 @@ a:focus-visible {
   width: min(100% - 96px, 1280px);
   height: 100px;
   margin: 0 auto;
-  border-bottom: 1px solid var(--line);
 }
 
 .wordmark {
@@ -64,7 +63,13 @@ a:focus-visible {
   max-width: 260px;
   object-fit: contain;
 }
-
+.footer-logo {
+  display: block;
+  width: auto;
+  height: 80px;
+  max-width: 260px;
+  object-fit: contain;
+}
 .site-nav {
   display: flex;
   align-items: center;
@@ -84,12 +89,28 @@ a:focus-visible {
 }
 
 .nav-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   padding: 12px 17px;
   border: 1px solid var(--ink);
   border-radius: 999px;
+  white-space: nowrap;
+}
+.nav-cta:hover {
+  background: var(--green);
+  color: white;
+}
+.nav-cta svg,
+.button-primary svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  fill: currentColor;
 }
 
-.nav-cta span,
 .button span {
   margin-left: 9px;
 }
@@ -201,6 +222,8 @@ p {
 }
 
 .button-primary {
+  gap: 8px;
+  white-space: nowrap;
   background: var(--ink);
   color: white;
 }
@@ -419,8 +442,8 @@ p {
 .detail-icon-2 {
   display: block;
   fill: var(--purple);
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
 }
 .detail-label {
   margin: 36px 0 10px;
