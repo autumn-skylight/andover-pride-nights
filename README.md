@@ -1,2 +1,3 @@
-# andover-pride-nights
-andover lgbtq+ social groups website 
+# andoverpridenights.co.uk
+
+andover lgbtq+ social groups website
