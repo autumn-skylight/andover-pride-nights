@@ -55,7 +55,13 @@ a:focus-visible {
   color: var(--ink);
   text-decoration: none;
 }
-
+.arrow-svg {
+  width: 1em;
+  height: 1em;
+  flex: 0 0 1em;
+  fill: currentColor;
+  transform: rotate(45deg);
+}
 .wordmark-logo {
   display: block;
   width: auto;
@@ -215,10 +221,6 @@ p {
   transition:
     transform 160ms ease,
     background-color 160ms ease;
-}
-
-.button:hover {
-  transform: translateY(-2px);
 }
 
 .button-primary {
@@ -577,6 +579,7 @@ p {
   max-width: 100%;
   grid-column: 1 / -1;
   justify-self: center;
+  gap: 8px;
   margin: 0;
   border: 0;
   cursor: pointer;
