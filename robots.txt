@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://andoverpridenights.co.uk/sitemap.xml
