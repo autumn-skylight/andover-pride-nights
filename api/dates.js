@@ -83,12 +83,9 @@ function renderPage({ authenticated, error = "" }) {
           .sort((left, right) => left.date.localeCompare(right.date))
           .map(({ date, beside = "", underneath = "" }) => {
             const label = formatDate(date);
-            const besideText = typeof beside === "string"
-              ? beside.trim()
-              : "";
-            const underneathText = typeof underneath === "string"
-              ? underneath.trim()
-              : "";
+            const besideText = typeof beside === "string" ? beside.trim() : "";
+            const underneathText =
+              typeof underneath === "string" ? underneath.trim() : "";
             const besideMarkup = besideText
               ? `<span class="date-update-beside">${escapeHtml(besideText)}</span>`
               : "";
@@ -137,7 +134,7 @@ function renderPage({ authenticated, error = "" }) {
   <main class="legal-main">
     <a class="legal-back" href="/">← Back to home</a>
     <h1 class="legal-heading">Dates</h1>
-    <section class="legal-copy" aria-label="Upcoming dates">${content}</section>
+    <section class="legal-copy" aria-label="Upcoming dates / chnages">${content}</section>
   </main>
 </body>
 </html>`;
