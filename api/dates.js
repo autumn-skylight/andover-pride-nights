@@ -1,5 +1,5 @@
 const { createHash, createHmac, timingSafeEqual } = require("node:crypto");
-const dateUpdates = require("../dates-updates.json");
+const dates = require("../dates.json");
 
 const SESSION_COOKIE = "dates_session";
 const SESSION_DURATION_SECONDS = 8 * 60 * 60;
@@ -41,28 +41,25 @@ function hasValidSession(req, secret) {
   return isEqual(signature || "", signSession(expiresAt, secret));
 }
 
-function getDates() {
-  return Array.from({ length: 24 }, (_, index) => {
-    const month = 11 + index;
-    const year = 2026 + Math.floor(month / 12);
-    const normalizedMonth = month % 12;
-    const firstDay = new Date(Date.UTC(year, normalizedMonth, 1));
-    const daysUntilWednesday = (3 - firstDay.getUTCDay() + 7) % 7;
-    const date = new Date(
-      Date.UTC(year, normalizedMonth, 1 + daysUntilWednesday),
-    );
+function formatDate(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    throw new Error(`Invalid date "${value}". Use YYYY-MM-DD.`);
+  }
 
-    return {
-      key: date.toISOString().slice(0, 10),
-      label: new Intl.DateTimeFormat("en-GB", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-        timeZone: "UTC",
-      }).format(date),
-    };
-  });
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+
+  if (date.toISOString().slice(0, 10) !== value) {
+    throw new Error(`Invalid calendar date "${value}".`);
+  }
+
+  return new Intl.DateTimeFormat("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
 }
 
 function escapeHtml(value) {
@@ -82,20 +79,21 @@ function escapeHtml(value) {
 function renderPage({ authenticated, error = "" }) {
   const content = authenticated
     ? `<p>Our next monthly meet-ups:</p>
-        <ol class="dates-list">${getDates()
-          .map(({ key, label }) => {
-            const update = dateUpdates[key] || {};
-            const beside = typeof update.beside === "string"
-              ? update.beside.trim()
+        <ol class="dates-list">${[...dates]
+          .sort((left, right) => left.date.localeCompare(right.date))
+          .map(({ date, beside = "", underneath = "" }) => {
+            const label = formatDate(date);
+            const besideText = typeof beside === "string"
+              ? beside.trim()
               : "";
-            const underneath = typeof update.underneath === "string"
-              ? update.underneath.trim()
+            const underneathText = typeof underneath === "string"
+              ? underneath.trim()
               : "";
-            const besideMarkup = beside
-              ? `<span class="date-update-beside">${escapeHtml(beside)}</span>`
+            const besideMarkup = besideText
+              ? `<span class="date-update-beside">${escapeHtml(besideText)}</span>`
               : "";
-            const underneathMarkup = underneath
-              ? `<p class="date-update-underneath">${escapeHtml(underneath)}</p>`
+            const underneathMarkup = underneathText
+              ? `<p class="date-update-underneath">${escapeHtml(underneathText)}</p>`
               : "";
 
             return `<li><strong>${label}</strong>${besideMarkup}${underneathMarkup}</li>`;

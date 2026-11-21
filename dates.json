@@ -1,102 +1,137 @@
-{
-  "2026-12-02": {
+[
+  {
+    "date": "2026-12-02",
     "beside": "hosted at vicolo lounge",
     "underneath": "first meet: just get to know and relax."
   },
-  "2027-01-06": {
+  {
+    "date": "2027-01-06",
     "beside": "hosted at vicolo lounge",
     "underneath": "second meet:"
   },
-  "2027-02-03": {
+  {
+    "date": "2027-02-03",
     "beside": "hosted at vicolo lounge",
     "underneath": "third meet:"
   },
-  "2027-03-06": {
+  {
+    "date": "2027-03-03",
+    "beside": "hosted at vicolo lounge",
+    "underneath": ""
+  },
+  {
+    "date": "2027-03-05",
     "beside": "hosted at vicolo lounge",
     "underneath": "fourth meet test"
   },
-  "2027-03-05": {
+  {
+    "date": "2027-03-06",
     "beside": "hosted at vicolo lounge",
-    "underneath": "fourth meet test"
+    "underneath": "brithday"
   },
-  "2027-04-07": {
+  {
+    "date": "2027-03-07",
+    "beside": "hosted at vicolo lounge",
+    "underneath": "fourth meet test 2"
+  },
+  {
+    "date": "2027-04-07",
     "beside": "hosted at vicolo lounge",
     "underneath": "5th meet"
   },
-  "2027-05-05": {
+  {
+    "date": "2027-05-05",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2027-06-02": {
+  {
+    "date": "2027-06-02",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2027-07-07": {
+  {
+    "date": "2027-07-07",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2027-08-04": {
+  {
+    "date": "2027-08-04",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2027-09-01": {
+  {
+    "date": "2027-09-01",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2027-10-06": {
+  {
+    "date": "2027-10-06",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2027-11-03": {
+  {
+    "date": "2027-11-03",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2027-12-01": {
+  {
+    "date": "2027-12-01",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2028-01-05": {
+  {
+    "date": "2028-01-05",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2028-02-02": {
+  {
+    "date": "2028-02-02",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2028-03-01": {
+  {
+    "date": "2028-03-01",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2028-04-05": {
+  {
+    "date": "2028-04-05",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2028-05-03": {
+  {
+    "date": "2028-05-03",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2028-06-07": {
+  {
+    "date": "2028-06-07",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2028-07-05": {
+  {
+    "date": "2028-07-05",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2028-08-02": {
+  {
+    "date": "2028-08-02",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2028-09-06": {
+  {
+    "date": "2028-09-06",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2028-10-04": {
+  {
+    "date": "2028-10-04",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   },
-  "2028-11-01": {
+  {
+    "date": "2028-11-01",
     "beside": "hosted at vicolo lounge",
     "underneath": ""
   }
-}
+]

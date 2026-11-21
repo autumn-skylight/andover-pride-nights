@@ -11,4 +11,16 @@ The `/dates` page is served by a Vercel function. In the Vercel project settings
 
 The dates are not returned until a visitor enters the password. Login sessions expire after eight hours.
 
-To add updates to a date, edit its `beside` and `underneath` values in `dates-updates.json`. The `beside` text appears next to the date, and `underneath` appears below it. Leave either value empty when not needed. Save and redeploy to publish changes.
+### Managing dates
+
+Edit `dates.json` to change the dates or notes. Each entry controls one date:
+
+```json
+{
+  "date": "2027-01-06",
+  "beside": "hosted at vicolo lounge",
+  "underneath": "second meet:"
+}
+```
+
+Use `YYYY-MM-DD` for dates. Change `date` to move a meet-up, edit either note, or copy an entry (including the comma between entries) to add another date. Leave a note as an empty string when you do not need it. Dates are sorted automatically. Commit and push to publish the changes through Vercel.
