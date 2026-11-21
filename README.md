@@ -11,4 +11,4 @@ The `/dates` page is served by a Vercel function. In the Vercel project settings
 
 The dates are not returned until a visitor enters the password. Login sessions expire after eight hours.
 
-To add an update beside a date, put its text in `dates-updates.json` next to the matching date. For example, change `"2026-12-02": ""` to `"2026-12-02": "Venue changed to the community hall."`. Save and redeploy to publish the update; leave the value empty when there is no update.
+To add updates to a date, edit its `beside` and `underneath` values in `dates-updates.json`. The `beside` text appears next to the date, and `underneath` appears below it. Leave either value empty when not needed. Save and redeploy to publish changes.
