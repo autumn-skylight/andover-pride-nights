@@ -1,23 +1,23 @@
-const { createHash, createHmac, timingSafeEqual } = require('node:crypto');
+const { createHash, createHmac, timingSafeEqual } = require("node:crypto");
 
-const SESSION_COOKIE = 'dates_session';
+const SESSION_COOKIE = "dates_session";
 const SESSION_DURATION_SECONDS = 8 * 60 * 60;
 
 function signSession(expiresAt, secret) {
-  return createHmac('sha256', secret)
+  return createHmac("sha256", secret)
     .update(`dates:${expiresAt}`)
-    .digest('base64url');
+    .digest("base64url");
 }
 
 function isEqual(left, right) {
-  const leftHash = createHash('sha256').update(left).digest();
-  const rightHash = createHash('sha256').update(right).digest();
+  const leftHash = createHash("sha256").update(left).digest();
+  const rightHash = createHash("sha256").update(right).digest();
 
   return timingSafeEqual(leftHash, rightHash);
 }
 
 function hasValidSession(req, secret) {
-  const cookies = (req.headers.cookie || '').split(';');
+  const cookies = (req.headers.cookie || "").split(";");
   const sessionCookie = cookies
     .map((cookie) => cookie.trim())
     .find((cookie) => cookie.startsWith(`${SESSION_COOKIE}=`));
@@ -26,13 +26,18 @@ function hasValidSession(req, secret) {
     return false;
   }
 
-  const [expiresAt, signature] = sessionCookie.slice(SESSION_COOKIE.length + 1).split('.');
+  const [expiresAt, signature] = sessionCookie
+    .slice(SESSION_COOKIE.length + 1)
+    .split(".");
 
-  if (!/^\d+$/.test(expiresAt) || Number(expiresAt) <= Math.floor(Date.now() / 1000)) {
+  if (
+    !/^\d+$/.test(expiresAt) ||
+    Number(expiresAt) <= Math.floor(Date.now() / 1000)
+  ) {
     return false;
   }
 
-  return isEqual(signature || '', signSession(expiresAt, secret));
+  return isEqual(signature || "", signSession(expiresAt, secret));
 }
 
 function getDates() {
@@ -42,22 +47,26 @@ function getDates() {
     const normalizedMonth = month % 12;
     const firstDay = new Date(Date.UTC(year, normalizedMonth, 1));
     const daysUntilWednesday = (3 - firstDay.getUTCDay() + 7) % 7;
-    const date = new Date(Date.UTC(year, normalizedMonth, 1 + daysUntilWednesday));
+    const date = new Date(
+      Date.UTC(year, normalizedMonth, 1 + daysUntilWednesday),
+    );
 
-    return new Intl.DateTimeFormat('en-GB', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-      timeZone: 'UTC',
+    return new Intl.DateTimeFormat("en-GB", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      timeZone: "UTC",
     }).format(date);
   });
 }
 
-function renderPage({ authenticated, error = '' }) {
+function renderPage({ authenticated, error = "" }) {
   const content = authenticated
     ? `<p>Our next six monthly meet-ups:</p>
-        <ol class="dates-list">${getDates().map((date) => `<li>${date}</li>`).join('')}</ol>`
+        <ol class="dates-list">${getDates()
+          .map((date) => `<li>${date}</li>`)
+          .join("")}</ol>`
     : `<p>Enter the password to see the upcoming dates.</p>
         <form class="password-form" method="post" action="/dates">
           <label for="password">Password</label>
@@ -74,6 +83,7 @@ function renderPage({ authenticated, error = '' }) {
   <meta name="robots" content="noindex, nofollow, noarchive">
   <title>Dates | Andover's Pride Nights</title>
   <link rel="stylesheet" href="/src/css/styles.css">
+  <link rel="icon" href="https://assets.andoverpridenights.co.uk/images/logos/andover-pride-nights-new-logo.ico" type="image/png">
   <style>
     .dates-list { padding-left: 1.4rem; }
     .dates-list li { margin: 0.9rem 0; color: #514f48; }
@@ -100,10 +110,10 @@ function renderPage({ authenticated, error = '' }) {
 }
 
 function setSecurityHeaders(res) {
-  res.setHeader('Cache-Control', 'no-store');
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
-  res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  res.setHeader("Cache-Control", "no-store");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
 }
 
 module.exports = (req, res) => {
@@ -113,25 +123,34 @@ module.exports = (req, res) => {
   const sessionSecret = process.env.DATES_SESSION_SECRET;
 
   if (!password || !sessionSecret) {
-    res.status(503).send('Dates page is not configured. Set DATES_PAGE_PASSWORD and DATES_SESSION_SECRET in Vercel.');
+    res
+      .status(503)
+      .send(
+        "Dates page is not configured. Set DATES_PAGE_PASSWORD and DATES_SESSION_SECRET in Vercel.",
+      );
     return;
   }
 
-  if (req.method === 'GET') {
-    res.status(200).send(renderPage({ authenticated: hasValidSession(req, sessionSecret) }));
+  if (req.method === "GET") {
+    res
+      .status(200)
+      .send(renderPage({ authenticated: hasValidSession(req, sessionSecret) }));
     return;
   }
 
-  if (req.method === 'POST') {
-    const submittedPassword = req.body && typeof req.body.password === 'string'
-      ? req.body.password
-      : '';
+  if (req.method === "POST") {
+    const submittedPassword =
+      req.body && typeof req.body.password === "string"
+        ? req.body.password
+        : "";
 
     if (!isEqual(submittedPassword, password)) {
-      res.status(401).send(renderPage({
-        authenticated: false,
-        error: 'That password was not recognised. Please try again.',
-      }));
+      res.status(401).send(
+        renderPage({
+          authenticated: false,
+          error: "That password was not recognised. Please try again.",
+        }),
+      );
       return;
     }
 
@@ -139,13 +158,13 @@ module.exports = (req, res) => {
     const signature = signSession(expiresAt, sessionSecret);
 
     res.setHeader(
-      'Set-Cookie',
+      "Set-Cookie",
       `${SESSION_COOKIE}=${expiresAt}.${signature}; Path=/dates; Max-Age=${SESSION_DURATION_SECONDS}; HttpOnly; Secure; SameSite=Strict`,
     );
-    res.status(303).setHeader('Location', '/dates').end();
+    res.status(303).setHeader("Location", "/dates").end();
     return;
   }
 
-  res.setHeader('Allow', 'GET, POST');
-  res.status(405).send('Method not allowed');
+  res.setHeader("Allow", "GET, POST");
+  res.status(405).send("Method not allowed");
 };
