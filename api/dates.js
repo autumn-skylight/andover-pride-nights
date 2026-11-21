@@ -1,4 +1,5 @@
 const { createHash, createHmac, timingSafeEqual } = require("node:crypto");
+const dateUpdates = require("../dates-updates.json");
 
 const SESSION_COOKIE = "dates_session";
 const SESSION_DURATION_SECONDS = 8 * 60 * 60;
@@ -51,21 +52,54 @@ function getDates() {
       Date.UTC(year, normalizedMonth, 1 + daysUntilWednesday),
     );
 
-    return new Intl.DateTimeFormat("en-GB", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      timeZone: "UTC",
-    }).format(date);
+    return {
+      key: date.toISOString().slice(0, 10),
+      label: new Intl.DateTimeFormat("en-GB", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        timeZone: "UTC",
+      }).format(date),
+    };
   });
+}
+
+function escapeHtml(value) {
+  return value.replace(
+    /[&<>"']/g,
+    (character) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      })[character],
+  );
 }
 
 function renderPage({ authenticated, error = "" }) {
   const content = authenticated
     ? `<p>Our next monthly meet-ups:</p>
         <ol class="dates-list">${getDates()
-          .map((date) => `<li>${date}</li>`)
+          .map(({ key, label }) => {
+            const update = dateUpdates[key] || {};
+            const beside = typeof update.beside === "string"
+              ? update.beside.trim()
+              : "";
+            const underneath = typeof update.underneath === "string"
+              ? update.underneath.trim()
+              : "";
+            const besideMarkup = beside
+              ? `<span class="date-update-beside">${escapeHtml(beside)}</span>`
+              : "";
+            const underneathMarkup = underneath
+              ? `<p class="date-update-underneath">${escapeHtml(underneath)}</p>`
+              : "";
+
+            return `<li><strong>${label}</strong>${besideMarkup}${underneathMarkup}</li>`;
+          })
           .join("")}</ol>`
     : `<p>Enter the password to see the upcoming dates.</p>
         <form class="password-form" method="post" action="/dates">
@@ -87,6 +121,8 @@ function renderPage({ authenticated, error = "" }) {
   <style>
     .dates-list { padding-left: 1.4rem; }
     .dates-list li { margin: 0.9rem 0; color: #514f48; }
+    .date-update-beside { margin-left: 0.55rem; color: #587d43; font-weight: 700; }
+    .date-update-underneath { margin: 0.35rem 0 0; color: #656158; }
     .password-form { display: grid; gap: 12px; max-width: 380px; }
     .password-form label { font-weight: 700; }
     .password-form input { min-height: 46px; padding: 11px 12px; border: 1px solid #c9c3b7; border-radius: 2em; font: inherit; }
