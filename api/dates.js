@@ -41,7 +41,7 @@ function hasValidSession(req, secret) {
 }
 
 function getDates() {
-  return Array.from({ length: 6 }, (_, index) => {
+  return Array.from({ length: 24 }, (_, index) => {
     const month = 11 + index;
     const year = 2026 + Math.floor(month / 12);
     const normalizedMonth = month % 12;
