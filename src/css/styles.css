@@ -826,10 +826,6 @@ p {
     gap: 15px;
   }
 
-  .site-nav > a:not(.nav-cta) {
-    display: none;
-  }
-
   .nav-cta {
     padding: 10px 13px;
     font-size: 11px;
