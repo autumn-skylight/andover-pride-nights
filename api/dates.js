@@ -1,4 +1,5 @@
 const { createHash, createHmac, timingSafeEqual } = require("node:crypto");
+const dateUpdates = require("../dates-updates.json");
 
 const SESSION_COOKIE = "dates_session";
 const SESSION_DURATION_SECONDS = 8 * 60 * 60;
@@ -51,21 +52,41 @@ function getDates() {
       Date.UTC(year, normalizedMonth, 1 + daysUntilWednesday),
     );
 
-    return new Intl.DateTimeFormat("en-GB", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-      timeZone: "UTC",
-    }).format(date);
+    return {
+      key: date.toISOString().slice(0, 10),
+      label: new Intl.DateTimeFormat("en-GB", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        timeZone: "UTC",
+      }).format(date),
+    };
   });
+}
+
+function escapeHtml(value) {
+  return value.replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  })[character]);
 }
 
 function renderPage({ authenticated, error = "" }) {
   const content = authenticated
-    ? `<p>Our next six monthly meet-ups:</p>
+    ? `<p>Our next monthly meet-ups:</p>
         <ol class="dates-list">${getDates()
-          .map((date) => `<li>${date}</li>`)
+          .map(({ key, label }) => {
+            const update = dateUpdates[key];
+            const updateMarkup = typeof update === "string" && update.trim()
+              ? `<p class="date-update">${escapeHtml(update)}</p>`
+              : "";
+
+            return `<li><strong>${label}</strong>${updateMarkup}</li>`;
+          })
           .join("")}</ol>`
     : `<p>Enter the password to see the upcoming dates.</p>
         <form class="password-form" method="post" action="/dates">
@@ -87,6 +108,7 @@ function renderPage({ authenticated, error = "" }) {
   <style>
     .dates-list { padding-left: 1.4rem; }
     .dates-list li { margin: 0.9rem 0; color: #514f48; }
+    .date-update { margin: 0.35rem 0 0; color: #656158; }
     .password-form { display: grid; gap: 12px; max-width: 380px; }
     .password-form label { font-weight: 700; }
     .password-form input { min-height: 46px; padding: 11px 12px; border: 1px solid #c9c3b7; border-radius: 2em; font: inherit; }
