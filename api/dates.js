@@ -134,7 +134,8 @@ function renderPage({ authenticated, error = "" }) {
   <main class="legal-main">
     <a class="legal-back" href="/">← Back to home</a>
     <h1 class="legal-heading">Dates</h1>
-    <section class="legal-copy" aria-label="Upcoming dates / chnages">${content}</section>
+<p class="legal-subheading"> check out Upcoming dates & any changes </p>
+    <section class="legal-copy" aria-label="Upcoming dates/changes">${content}</section>
   </main>
 </body>
 </html>`;
